@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  run-model-locally:
+    container_name: association-model-local-starter
+    restart: "no"
+    image: tianon/true
+    depends_on:
+      - association-model
+
+  association-model:
+    container_name: association-model
+    build:
+      context: .
+    command: poetry run python ./association_model/model.py --name association-model  --type association
+    restart: unless-stopped
+    volumes:
+      - .:/app-workspace
+    env_file:
+      - .env
+    networks:
+      - picachu-api-private_picachu-net
+
+networks:
+  picachu-api-private_picachu-net:
+    external: true
