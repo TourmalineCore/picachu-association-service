@@ -27,7 +27,7 @@ class ModelLogic:
         predict = MODEL(sequence_to_classify, CANDIDATE_LABELS, multi_label=True)
         print(predict)
 
-        result = [predict['labels'][i] for i in range(len(predict['labels'])) if predict['scores'][i] > 0.7]
+        result = [predict['labels'][i] for i in range(len(predict['labels'])) if predict['scores'][i] > 0.9]
         print(result)
 
         ended_time = datetime.now()
