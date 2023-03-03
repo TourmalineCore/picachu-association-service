@@ -1,26 +1,29 @@
+from abc import ABC
+
 import torch
 import torchvision
 from transformers import pipeline
 from datetime import datetime
 
+from model.processing_model_base import ProcessingModelBase
+
 print(torch.__version__)
 print(torchvision.__version__)
 
-with open('./association_model/association_dict.txt', 'r') as dict_file:
+with open('./model/association_dict.txt', 'r') as dict_file:
     CANDIDATE_LABELS = dict_file.read().split("\n")
 
-# CANDIDATE_LABELS = ['calm', 'people', 'plant']
 
 MODEL_NAME = 'cross-encoder/nli-distilroberta-base'
 
 MODEL = pipeline("zero-shot-classification", model=MODEL_NAME)
 
 
-class ModelLogic:
+class AssociationModel(ProcessingModelBase, ABC):
     def __init__(self):
-        pass
+        super().__init__()
 
-    def model_specific_logic(self, sequence_to_classify):
+    def process_data(self, sequence_to_classify):
         started_time = datetime.now()
         print(sequence_to_classify)
         print(CANDIDATE_LABELS)
@@ -34,3 +37,4 @@ class ModelLogic:
         print(f'TIME:{ended_time - started_time}')
 
         return [{'name': tag} for tag in result]
+
